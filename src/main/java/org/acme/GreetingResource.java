@@ -34,8 +34,13 @@ public class GreetingResource {
     @PUT
     @Path("/{id}/{adding}")
     public String adding(@PathParam("id") String id, @PathParam("hello") String hello) {
-        return "A blog with id " +id ;
-        return "has been updated with content" + hello;
+        return "A blog with id '+12' has been updated with content hello";
+    }
+
+    @DELETE
+    @Path("/remove")
+    public String remove(@PathParam("id") String id){
+        return "You deleted the blg with the id" +89;
     }
 
 }
