@@ -2,46 +2,51 @@ package org.acme;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 
-@Path("/ABC")
+@Path("/Blog")
 public class GreetingResource {
 
+    Blogservice blogservice = new Blogservice();
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String ABC() {
+    public String Blog() {
         return "Read All Blogs";
     }
 
+    @GET
+    @Path("/rblog")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Blog> Blogwithqwery(@QueryParam("name") String name) {
+        return (List<Blog>) blogservice.getBlog();
+    }
 
     @GET
-    @Path("/{name}/{All}")
-    public String All(@PathParam("name") String name, @PathParam("All") String All) {
-        return "Hello" +name ;
+    @Path("/readblog")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String readblog (@PathParam("Blog") String Blog){
+        return "read a blog by blogger";
+    }
+
+    @POST
+    @Path("/Query")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Blog PostBlog(@QueryParam("name") String name, @QueryParam("author") String author) {
+        return blogservice.postBlog(name , author);
     }
 
     @GET
     @Path("/particular")
-    public String particular() {
-        return "Get a particular blog";
-    }
-
-    @POST
-    @Path("/hello")
-    public String hello() {
-        return "A new blog is created with content hello";
-    }
-
-    @PUT
-    @Path("/{id}/{adding}")
-    public String adding(@PathParam("id") String id, @PathParam("hello") String hello) {
-        return "A blog with id '+12' has been updated with content hello";
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Blog> Blogwithquery(@QueryParam("author") String author, @QueryParam("name") String name) {
+        return (List<Blog>) blogservice.getBlog();
     }
 
     @DELETE
     @Path("/remove")
-    public String remove(@PathParam("id") String id){
-        return "You deleted the blg with the id" +89;
+    @Produces(MediaType.APPLICATION_JSON)
+    public String removequery(@QueryParam("author") String author, @QueryParam("name") String name) {
+        return "A blog with " +name+ "and" +author+ "has been deleted";
     }
-
 }
 
