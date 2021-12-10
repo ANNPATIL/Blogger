@@ -1,52 +1,57 @@
 package org.acme;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-@Path("/Blog")
+@Path("/Blogs")
 public class GreetingResource {
 
-    Blogservice blogservice = new Blogservice();
+
+    @Inject
+    Blogservice blogservice;
 
     @GET
-    public String Blog() {
-        return "Read All Blogs";
-    }
-
-    @GET
-    @Path("/rblog")
+    @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
     public List<Blog> Blogwithqwery(@QueryParam("name") String name) {
-        return (List<Blog>) blogservice.getBlog();
+        return (List<Blog>) blogservice.getBlogs();
     }
 
-    @GET
-    @Path("/readblog")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String readblog (@PathParam("Blog") String Blog){
-        return "read a blog by blogger";
-    }
+//    @GET
+//    @Path("/readblog")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String readblog (@PathParam("Blog") String Blog){
+//        return "read a blog by blogger";
+//    }
 
     @POST
-    @Path("/Query")
+    @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
     public Blog PostBlog(@QueryParam("name") String name, @QueryParam("author") String author) {
         return blogservice.postBlog(name , author);
     }
 
-    @GET
-    @Path("/particular")
+    @PUT
+    @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Blog> Blogwithquery(@QueryParam("author") String author, @QueryParam("name") String name) {
-        return (List<Blog>) blogservice.getBlog();
+    public Blog updateBlogbyname(@QueryParam("name") String name, @QueryParam("author") String author) {
+        return blogservice.updateBlogbyname(name, author);
+    }
+
+    @GET
+    @Path("/blog/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public  Blog getBlogbyname(@PathParam("name") String name){
+        return blogservice.getBlogbyname(name);
     }
 
     @DELETE
-    @Path("/remove")
+    @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
-    public String removequery(@QueryParam("author") String author, @QueryParam("name") String name) {
-        return "A blog with " +name+ "and" +author+ "has been deleted";
+    public Blog deleteBlogbyname(@QueryParam("name") String name, @QueryParam("author") String author) {
+        return blogservice.deleteBlogbyname(name, author);
     }
 }
 
