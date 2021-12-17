@@ -1,4 +1,5 @@
 package org.acme;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -14,44 +15,42 @@ public class BlogServiceImpl implements BlogService {
     public BlogServiceImpl() {
 
     }
+//
+//    @Transactional
+//    public Blog getBlog(Blog id) {
+//        Blog blog = new Blog();
+//        List<Blog> blogs = Blog.listAll();
+//        for (Blog blog1 : blogs) {
+//            if (blog1.id.equals(id)) {
+//                return blog;
+//            }
+//        }
+//        return null;
+//    }
 
     @Transactional
-    public List<Blog> getBlogs() {
+    public List<Blog> GetBlogs() {
         return Blog.listAll();
     }
 
 
     @Transactional
-    public Blog getBlog(Blog id) {
-        Blog blog = new Blog();
-        List<Blog> blogs = Blog.listAll();
-        for (Blog blog1 : blogs) {
-            if (blog1.id.equals(id)) {
-                return blog;
-            }
-        }
-        return null;
+    public Blog findByid(long id,Blog blog) {
+        return bloggingRepository.findByid(id,blog);
+    }
+
+    @Transactional
+    public Blog UpdateBlog(long id, Blog blog) {
+        return bloggingRepository.updateBlog(id, blog);
     }
 
 
-    @Transactional
-    public Blog postBlog(Blog blog) {
-
+    public Blog PostBlog(Blog blog) {
         return bloggingRepository.postBlog(blog);
     }
 
     @Transactional
-    public Blog UpdateBlog(String id , Blog blog) {
-        return bloggingRepository.UpdateBlog(id);
-    }
-
-
-    @Transactional
-    public String DeleteBlog(long id ) {
+    public String DeleteBlog(long id) {
         return bloggingRepository.findanddelete(id);
     }
-
-
-
 }
-

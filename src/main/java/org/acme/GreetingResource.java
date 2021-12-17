@@ -4,71 +4,55 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/Blogs")
+@Path("/Blog")
 public class GreetingResource {
 
 
     @Inject
-    BlogService blogService;
+    BlogService bloggingService;
 
     @GET
     @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public List<Blog> Blogwithqwery(@QueryParam("id") int id) {
-
-        return blogService.getBlogs();
+    public List<Blog> Blogwithqwery(@QueryParam("name") String name) {
+        return (List<Blog>) bloggingService.GetBlogs();
     }
 
-    @GET
-    @Path("/blog")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Transactional
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Blog getBlog(Blog blog) {
-        return blogService.getBlog(blog);
-    }
 
     @POST
     @Path("/blog")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
-    public Blog postBlog(Blog blog) {
-        return blogService.postBlog(blog);
+    public Response PostBlog(Blog blog) {
+        bloggingService.PostBlog(blog);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
     @Path("/blog/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Transactional
-    public Blog UpdateBlog(@PathParam("id") String id,Blog blog) {
-        return blogService.UpdateBlog(id,blog);
+    public Blog UpdateBlog(@PathParam("id") long id, Blog blog) {
+        return bloggingService.UpdateBlog(id, blog);
     }
+
+    @GET
+    @Path("/blog/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Blog findByid(@PathParam("id") long id, Blog blog) {
+        return bloggingService.findByid(id,blog);
+    }
+
 
     @DELETE
     @Path("/blog/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String deleteBlog(@PathParam("id") long id) {
-        return blogService.DeleteBlog(id);
+        return bloggingService.DeleteBlog(id);
     }
-
-
-
-
-//    @DELETE
-//    @Path("/blog/{id}")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Transactional
-//    public String deleteblog(@PathParam("id") long id){
-//        return blogService.deleteblog(id);
-//    }
-
-
-
-
 }
-
